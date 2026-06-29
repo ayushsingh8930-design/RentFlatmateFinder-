@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
+from sqlalchemy.orm import relationship  
 from app.database import Base
 
 
@@ -12,5 +13,7 @@ class Property(Base):
     rent = Column(Integer, nullable=False)
 
     owner_id = Column(Integer, ForeignKey("users.id"))
-
+    owner = relationship("User", back_populates="properties")
     is_available = Column(Boolean, default=True)
+
+    images = relationship("PropertyImage", back_populates="property")

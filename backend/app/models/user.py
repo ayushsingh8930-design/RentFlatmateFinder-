@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String, Boolean
+from sqlalchemy.orm import relationship
 from app.database import Base
 
 
@@ -11,4 +12,5 @@ class User(Base):
     phone = Column(String, unique=True, nullable=True)
     password = Column(String, nullable=False)
     role = Column(String, default="tenant", nullable=False)
+    properties = relationship("Property", back_populates="owner")
     is_verified = Column(Boolean, default=False)
