@@ -12,6 +12,7 @@ from app.services.property_service import ( create_property,
 from app.services.property_service import get_owner_properties
 from app.services.property_service import delete_property
 from app.services.property_service import update_property
+from app.services.property_service import get_property_by_id
 
 
 router = APIRouter(
@@ -43,6 +44,14 @@ def search_property(
     db: Session = Depends(get_db)
 ):
     return get_properties_by_city(db, city)
+
+@router.get("/{property_id}", response_model=PropertyResponse)
+def get_property(
+    property_id: int,
+    db: Session = Depends(get_db)
+):
+    return get_property_by_id(db, property_id)
+
 
 @router.get("/owner/{owner_id}", response_model=list[PropertyResponse])
 def owner_properties(owner_id: int, db: Session = Depends(get_db)):

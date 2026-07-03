@@ -3,6 +3,9 @@ from sqlalchemy.orm import Session
 from app.models.property import Property
 from app.schemas.property import PropertyCreate
 
+from fastapi import HTTPException
+from app.models.property import Property
+
 
 def create_property(
     db: Session,
@@ -83,5 +86,21 @@ def mark_property_filled(db: Session, property_id: int):
 
     db.commit()
     db.refresh(property)
+
+    return property
+
+
+def get_property_by_id(db, property_id: int):
+    property = (
+        db.query(Property)
+        .filter(Property.id == property_id)
+        .first()
+    )
+
+    if not property:
+        raise HTTPException(
+            status_code=404,
+            detail="Property not found"
+        )
 
     return property

@@ -15,6 +15,12 @@ async def websocket_chat(
     websocket: WebSocket,
     interest_id: int
 ):
+    await websocket.accept()
+    
+    if interest_id not in connections:
+      connections[interest_id] = []
+
+    connections[interest_id].append(websocket)
 
     try:
         while True:
@@ -41,9 +47,3 @@ async def websocket_chat(
     except WebSocketDisconnect:
         connections[interest_id].remove(websocket)
 
-    await websocket.accept()
-
-    if interest_id not in connections:
-      connections[interest_id] = []
-
-    connections[interest_id].append(websocket)

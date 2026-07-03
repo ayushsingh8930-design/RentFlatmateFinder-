@@ -16,10 +16,20 @@ from app.models import Message
 from app.routers.message import router as message_router
 from app.routers.chat import router as chat_router
 from app.routers.email_test import router as email_router
+from app.routers.admin import router as admin_router
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(
     title=settings.APP_NAME,
     version=settings.APP_VERSION
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 Base.metadata.create_all(bind=engine)
@@ -40,8 +50,9 @@ app.include_router(interest_router)
 app.include_router(message_router)
 app.include_router(chat_router)
 app.include_router(email_router)
-
+app.include_router(admin_router)
 
 
 
 #uvicorn app.main:app --reload
+#npm run dev

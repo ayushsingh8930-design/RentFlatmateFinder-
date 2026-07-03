@@ -17,3 +17,6 @@ backend/.env
 
 # JetBrains
 .idea/
+
+node_modules/
+dist/
