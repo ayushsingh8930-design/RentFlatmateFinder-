@@ -5,11 +5,14 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.schemas.property import PropertyCreate, PropertyResponse
 from app.services.property_service import ( create_property, 
-                                           get_all_properties, get_properties_by_city
+                                           get_all_properties, 
+                                           get_properties_by_city,
+                                           mark_property_filled
                                            )
 from app.services.property_service import get_owner_properties
 from app.services.property_service import delete_property
 from app.services.property_service import update_property
+
 
 router = APIRouter(
     prefix="/properties",
@@ -59,3 +62,11 @@ def edit_property(
     db: Session = Depends(get_db)
 ):
     return update_property(db, property_id, property_data)
+
+@router.put("/{property_id}/filled",
+            response_model=PropertyResponse)
+def mark_filled(
+    property_id: int,
+    db: Session = Depends(get_db)
+):
+    return mark_property_filled(db, property_id)

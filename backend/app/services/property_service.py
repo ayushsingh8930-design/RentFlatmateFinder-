@@ -14,7 +14,10 @@ def create_property(
         description=property_data.description,
         city=property_data.city,
         rent=property_data.rent,
-        owner_id=owner_id
+        owner_id=owner_id,
+        available_from=property_data.available_from,
+        room_type=property_data.room_type,
+        furnishing_status=property_data.furnishing_status
     )
 
     db.add(new_property)
@@ -24,10 +27,15 @@ def create_property(
     return new_property
 
 def get_all_properties(db: Session):
-    return db.query(Property).all()
+    return db.query(Property).filter(
+    Property.is_available == True
+    ).all()
 
 def get_properties_by_city(db: Session, city: str):
-    return db.query(Property).filter(Property.city == city).all()
+    return db.query(Property).filter(
+    Property.city == city,
+    Property.is_available == True
+    ).all()
 
 def get_owner_properties(db, owner_id):
     return db.query(Property).filter(Property.owner_id == owner_id).all()
@@ -53,6 +61,25 @@ def update_property(db: Session, property_id: int, property_data: PropertyCreate
     property.description = property_data.description
     property.city = property_data.city
     property.rent = property_data.rent
+    property.available_from = property_data.available_from
+    property.room_type = property_data.room_type
+    property.furnishing_status = property_data.furnishing_status
+
+    db.commit()
+    db.refresh(property)
+
+    return property
+
+def mark_property_filled(db: Session, property_id: int):
+
+    property = db.query(Property).filter(
+        Property.id == property_id
+    ).first()
+
+    if not property:
+        return {"message": "Property not found"}
+
+    property.is_available = False
 
     db.commit()
     db.refresh(property)

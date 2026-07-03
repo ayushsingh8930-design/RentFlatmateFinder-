@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual Environment
+.venv/
+
+# Environment
+backend/.env
+.env
+
+# Database
+*.db
+
+# VS Code
+.vscode/
+
+# JetBrains
+.idea/

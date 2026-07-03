@@ -7,6 +7,10 @@ class PropertyCreate(BaseModel):
     city: str
     rent: int
 
+    available_from: str
+    room_type: str
+    furnishing_status: str
+
 
 class PropertyResponse(BaseModel):
     id: int
@@ -14,6 +18,11 @@ class PropertyResponse(BaseModel):
     description: str
     city: str
     rent: int
+
+    available_from: str
+    room_type: str
+    furnishing_status: str
+
     owner_id: int
     is_available: bool
 
